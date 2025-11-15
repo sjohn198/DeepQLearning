@@ -1,5 +1,5 @@
 from collections import deque
-import numpy as np
+import torch
 import random
 
 class ReplayBuffer:
@@ -12,14 +12,22 @@ class ReplayBuffer:
     def sample(self, batch_size):
         memories = random.sample(self.dq, batch_size)
 
-        states, actions, next_states, rewards, dones, truncated = zip(*memories)
+        states, actions, next_states, rewards, dones, truncateds = zip(*memories)
 
-        states = np.array(states).reshape(batch_size, 4)
-        actions = np.array(actions).reshape(batch_size, 1)
-        next_states = np.array(next_states).reshape(batch_size, 4)
-        rewards = np.array(rewards).reshape(batch_size, 1)
-        dones = np.array(dones).reshape(batch_size, 1)
-        truncateds = np.array(truncateds).reshape(batch_size, 1)
+        # print(states)
+        # print(actions)
+        # print(next_states)
+        # print(rewards)
+        # print(dones)
+        # print(truncateds)
+        # print(torch.tensor(states).reshape(batch_size, 4))
+
+        states = torch.tensor(states).reshape(batch_size, 4)
+        actions = torch.tensor(actions).reshape(batch_size, 1)
+        next_states = torch.tensor(next_states).reshape(batch_size, 4)
+        rewards = torch.tensor(rewards).reshape(batch_size, 1)
+        dones = torch.tensor(dones).reshape(batch_size, 1)
+        truncateds = torch.tensor(truncateds).reshape(batch_size, 1)
 
         return states, actions, next_states, rewards, dones, truncateds
     
