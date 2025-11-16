@@ -14,20 +14,13 @@ class ReplayBuffer:
 
         states, actions, next_states, rewards, dones, truncateds = zip(*memories)
 
-        # print(states)
-        # print(actions)
-        # print(next_states)
-        # print(rewards)
-        # print(dones)
-        # print(truncateds)
-        # print(torch.tensor(states).reshape(batch_size, 4))
-
-        states = torch.tensor(states).reshape(batch_size, 4)
+        states = torch.tensor(states, dtype=torch.float32).reshape(batch_size, 4)
         actions = torch.tensor(actions).reshape(batch_size, 1)
-        next_states = torch.tensor(next_states).reshape(batch_size, 4)
-        rewards = torch.tensor(rewards).reshape(batch_size, 1)
-        dones = torch.tensor(dones).reshape(batch_size, 1)
-        truncateds = torch.tensor(truncateds).reshape(batch_size, 1)
+        next_states = torch.tensor(next_states, dtype=torch.float32).reshape(batch_size, 4)
+        rewards = torch.tensor(rewards)
+        dones = torch.tensor(dones).to(torch.int)
+        truncateds = torch.tensor(truncateds).reshape(batch_size, 1).to(torch.int)
+
 
         return states, actions, next_states, rewards, dones, truncateds
     
